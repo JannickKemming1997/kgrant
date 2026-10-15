@@ -13,7 +13,7 @@ jobs:
         os: [ubuntu-24.04, macos-26]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: jdx/mise-action@v5
       - run: cargo fmt --all --check
       - run: cargo clippy --workspace --all-targets -- -D warnings
@@ -24,7 +24,7 @@ jobs:
   manual-database:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: jdx/mise-action@v5
       - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends fish keepassxc
       - run: mise run database:import

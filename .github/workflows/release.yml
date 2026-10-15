@@ -6,9 +6,9 @@ on:
 
 jobs:
   verify:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Tag matches the crate version
         run: |
           version=$(cargo metadata --no-deps --format-version 1 \
@@ -30,24 +30,24 @@ jobs:
           - { target: aarch64-apple-darwin, os: macos-26 }
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: jdx/mise-action@v5
       - run: cargo test --workspace --locked
       - run: cargo build --release --locked -p kgrant --target ${{ matrix.target }}
       - name: Name the binary
         run: cp "target/${{ matrix.target }}/release/kgrant" "kgrant-$GITHUB_REF_NAME-${{ matrix.target }}"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.target }}
           path: kgrant-*
 
   release:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     permissions:
       contents: write
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           path: dist
           merge-multiple: true
