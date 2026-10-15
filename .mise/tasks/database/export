@@ -1,0 +1,12 @@
+#!/usr/bin/env fish
+#MISE description="Export tests/manual/database.kdbx (master password `password`) to tests/manual/database.xml"
+
+set dir $MISE_PROJECT_ROOT/tests/manual
+set tmp (mktemp)
+or exit 1
+if echo password | keepassxc-cli export --quiet --format xml $dir/database.kdbx >$tmp
+    mv $tmp $dir/database.xml
+else
+    rm -f $tmp
+    exit 1
+end

@@ -1,0 +1,8 @@
+#!/usr/bin/env fish
+#MISE description="Build tests/manual/database.kdbx (master password `password`) from tests/manual/database.xml"
+# Needs keepassxc-cli. Overwrites an existing file. The reverse is database:export.
+
+set dir $MISE_PROJECT_ROOT/tests/manual
+set out $dir/database.kdbx
+rm -f $out
+printf 'password\npassword\n' | keepassxc-cli import --set-password $dir/database.xml $out
