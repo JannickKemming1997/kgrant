@@ -16,6 +16,16 @@ kgrant get AWS "Access Key ID" "Secret Access Key" --json   # several fields of 
 
 With one field, `kgrant get` prints its value as it is. With several, you need `--json`, which prints an object from field name to value. All fields of one entry are fetched in one request, so KeePassXC asks only once per entry.
 
+## Shell completion
+
+`kgrant` completes its subcommands and options. For fish, add this to your config:
+
+```fish
+COMPLETE=fish kgrant | source
+```
+
+Other shells work the same way, with `COMPLETE=bash`, `zsh`, `elvish` or `powershell`. Entry and field names are not completed, because that would mean asking KeePassXC.
+
 ## Library
 
 `kgrant` is also a library. Code that needs secrets takes a `&dyn Secrets`. In production that is `KeePassXc`, and in tests it can be `StaticSecrets` or any closure.

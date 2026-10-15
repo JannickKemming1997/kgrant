@@ -5,7 +5,8 @@ use std::ffi::OsString;
 use std::io::{self, Write};
 use std::process::ExitCode;
 
-use clap::{Parser, Subcommand};
+use clap::{CommandFactory, Parser, Subcommand};
+use clap_complete::CompleteEnv;
 
 use crate::Result;
 use crate::secret::Secret;
@@ -46,10 +47,15 @@ enum Command {
 /// returns its exit status. Errors are printed here: returning one from `main`
 /// would print its `Debug` form (strings in quotes), so the `Display` message
 /// is printed instead.
+///
+/// When the shell asks for completions (`COMPLETE=<shell> kgrant ...`, which is
+/// what the line `COMPLETE=fish kgrant | source` sets up), this answers and
+/// exits the process, using the real process arguments instead of `args`.
 pub fn run(
     args: impl IntoIterator<Item = impl Into<OsString> + Clone>,
     secrets: &dyn Secrets,
 ) -> ExitCode {
+    CompleteEnv::with_factory(Cli::command).complete();
     let cli = match Cli::try_parse_from(args) {
         Ok(cli) => cli,
         Err(e) => {
